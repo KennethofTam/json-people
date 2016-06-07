@@ -16,23 +16,13 @@ $('a[data-remote="true"]').on('click', function(e) {
 $('a[href="https://mutant-school.herokuapp.com/api/v1/mutants"]').on('click', function(e){
   e.preventDefault();
   $.ajax ({
-    url: $(this).attr('href'),
+    url: $(this).attr('href'), // + '?callback=listMutants',
     type:"GET",
   })
   .done (function(data, textStatus, jqXHR) {
       console.log("Request successful: " + jqXHR.status);
       mutants.push(data);
-      console.log(mutants);
-
-      $('#mutants').slideUp();
-      $('#mutants').empty();
-      $.each(mutants, function(index, mutant) {
-        var item = $('#template').clone().attr('id', '');
-        item.html(item.html().replace('{{ mutant.mutant_name }}', mutant.mutant_name));
-        item.removeClass('hide');
-        $('#mutants').append(item);
-        $('#mutants').slideDown();
-      });
+      listMutants();
     });
 });
 
@@ -45,6 +35,19 @@ function loadResults(data) {
     people = people.concat(data.people);
   }
   listPeople();
+}
+
+function listMutants() {
+  $('#people').slideUp();
+  $('#people').empty();
+  $.each(mutants, function(index, mutant) {
+    var item = $('#mutantTemplate').clone().attr('id', '');
+    debugger;
+    item.html(item.html().replace('{{ mutant.mutant_name }}', mutant.mutant_name));
+    item.removeClass('hide');
+    $('#people').append(item);
+    $('#people').slideDown();
+  });
 }
 
 function listPeople() {
@@ -61,4 +64,5 @@ function listPeople() {
   });
 }
 
+listMutants();
 listPeople();

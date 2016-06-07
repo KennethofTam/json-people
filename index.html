@@ -33,11 +33,17 @@
     <main class="small-6 columns end">
       <ul id="people"></ul>
     </main>
+
+
   </div>
 
   <li id="template" class="hide list-group-item">
     {{ person.firstName }} {{ person.lastName }}
     ({{ person.secret }})
+  </li>
+
+  <li id="mutantTemplate" class="hide list-group-item">
+    {{ mutant.mutant_name }}
   </li>
 
   <script src="js/vendor/jquery.js"></script>
