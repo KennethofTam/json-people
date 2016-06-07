@@ -1,5 +1,5 @@
 var people = [];
-
+var mutants = [];
 $('#menuToggle').on('click', function() {
   $('nav ul').toggle(400);
 });
@@ -13,17 +13,29 @@ $('a[data-remote="true"]').on('click', function(e) {
   });
 });
 
-$.ajax ({
-  url: "https://mutant-school.herokuapp.com/api/v1/mutants",
-  type:"GET",
-})
-.done (function(data, textStatus, jqXHR) {
-    console.log("Request successful: " + jqXHR.status);
-    console.log(data);
-})
-.fail (function(jqXHR, textStatus, errorThrown) {
-  console.log("Request failed");
+$('a[href="https://mutant-school.herokuapp.com/api/v1/mutants"]').on('click', function(e){
+  e.preventDefault();
+  $.ajax ({
+    url: $(this).attr('href'),
+    type:"GET",
+  })
+  .done (function(data, textStatus, jqXHR) {
+      console.log("Request successful: " + jqXHR.status);
+      mutants.push(data);
+      console.log(mutants);
+
+      $('#mutants').slideUp();
+      $('#mutants').empty();
+      $.each(mutants, function(index, mutant) {
+        var item = $('#template').clone().attr('id', '');
+        item.html(item.html().replace('{{ mutant.mutant_name }}', mutant.mutant_name));
+        item.removeClass('hide');
+        $('#mutants').append(item);
+        $('#mutants').slideDown();
+      });
+    });
 });
+
 
 function loadResults(data) {
   if (data.firstName) {
